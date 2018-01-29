@@ -156,6 +156,11 @@ module.exports.audioDevices = async () => {
   }
 };
 
+module.exports.displayDevices = async () => {
+  const stderr = await execa.stderr(BIN, ['list-displays']);
+  return stderr
+};
+
 Object.defineProperty(module.exports, 'videoCodecs', {
   get() {
     const codecs = new Map([

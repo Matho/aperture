@@ -1,5 +1,6 @@
 import Foundation
 import AVFoundation
+import CoreGraphics
 
 var recorder: Recorder!
 let arguments = CommandLine.arguments.dropFirst()
@@ -66,13 +67,42 @@ func usage() {
     Usage:
       aperture <options>
       aperture list-audio-devices
+      aperture list-displays
     """
   )
 }
 
+func printDisplays() {
+  var displayCount: UInt32 = 0;
+  var result = CGGetActiveDisplayList(0, nil, &displayCount)
+  if (result != CGError.success) {
+    printErr("error: \(result)")
+    return
+  }
+  let allocated = Int(displayCount)
+  let activeDisplays = UnsafeMutablePointer<CGDirectDisplayID>.allocate(capacity: allocated)
+  result = CGGetActiveDisplayList(displayCount, activeDisplays, &displayCount)
+  if (result != CGError.success) {
+    printErr("error: \(result)")
+    return
+  }
+  print("\(displayCount) displays:")
+  for i in 0..<displayCount {
+    printErr("[\(i)] - \(activeDisplays[Int(i)])")
+  }
+  activeDisplays.deallocate(capacity: allocated)
+}
+
+
 if arguments.first == "list-audio-devices" {
   // Uses stderr because of unrelated stuff being outputted on stdout
   printErr(try toJson(DeviceList.audio()))
+  exit(0)
+}
+
+if arguments.first == "list-displays" {
+  printDisplays()
+
   exit(0)
 }
 
