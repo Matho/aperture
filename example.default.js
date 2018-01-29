@@ -7,13 +7,9 @@ async function main() {
   const recorder = aperture();
   console.log('Audio devices:', await aperture.audioDevices());
   console.log('Preparing to record for 5 seconds');
-  await recorder.startRecording({
-    fps: 30,
-    audioDeviceId: "AppleHDAEngineInput:1B,0,1,0:1",
-    displayId: ""
-  });
+  await recorder.startRecording();
   console.log('Recording started');
-  await delay(60000);
+  await delay(15000);
   const fp = await recorder.stopRecording();
   fs.renameSync(fp, 'recording.mp4');
   console.log('Video saved in the current directory');

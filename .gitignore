@@ -4,3 +4,6 @@ node_modules
 !*.xcworkspace/contents.xcworkspacedata
 /swift/build
 /aperture
+.idea/*
+*.mp4
+swift/.idea/*
