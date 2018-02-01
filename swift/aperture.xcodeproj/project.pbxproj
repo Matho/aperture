@@ -7,17 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A829F79D20231FBF00C91F58 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829F79C20231FBF00C91F58 /* Logger.swift */; };
+		A829F7B120246B3F00C91F58 /* NewRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A829F7A0202326ED00C91F58 /* NewRecorder.swift */; };
 		E3A310881E450DC800D314DD /* DeviceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A310851E450DC800D314DD /* DeviceList.swift */; };
 		E3A310891E450DC800D314DD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A310861E450DC800D314DD /* main.swift */; };
-		E3A3108A1E450DC800D314DD /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A310871E450DC800D314DD /* Recorder.swift */; };
 		E3A8F9E11E46F9C000C6C5FC /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A8F9E01E46F9C000C6C5FC /* util.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A829F79C20231FBF00C91F58 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		A829F7A0202326ED00C91F58 /* NewRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecorder.swift; sourceTree = "<group>"; };
 		E3A3107B1E450D3600D314DD /* aperture */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aperture; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A310851E450DC800D314DD /* DeviceList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceList.swift; sourceTree = "<group>"; };
 		E3A310861E450DC800D314DD /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		E3A310871E450DC800D314DD /* Recorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
 		E3A8F9E01E46F9C000C6C5FC /* util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -55,9 +57,10 @@
 			isa = PBXGroup;
 			children = (
 				E3A310861E450DC800D314DD /* main.swift */,
-				E3A310871E450DC800D314DD /* Recorder.swift */,
 				E3A310851E450DC800D314DD /* DeviceList.swift */,
 				E3A8F9E01E46F9C000C6C5FC /* util.swift */,
+				A829F79C20231FBF00C91F58 /* Logger.swift */,
+				A829F7A0202326ED00C91F58 /* NewRecorder.swift */,
 			);
 			path = aperture;
 			sourceTree = "<group>";
@@ -71,7 +74,7 @@
 			buildPhases = (
 				E3A310771E450D3600D314DD /* Sources */,
 				E3A310781E450D3600D314DD /* Frameworks */,
-				E325A4461E450E5E0016DB84 /* ShellScript */,
+				E325A4461E450E5E0016DB84 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -117,13 +120,14 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		E325A4461E450E5E0016DB84 /* ShellScript */ = {
+		E325A4461E450E5E0016DB84 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,9 +141,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3A3108A1E450DC800D314DD /* Recorder.swift in Sources */,
+				A829F79D20231FBF00C91F58 /* Logger.swift in Sources */,
 				E3A310891E450DC800D314DD /* main.swift in Sources */,
 				E3A310881E450DC800D314DD /* DeviceList.swift in Sources */,
+				A829F7B120246B3F00C91F58 /* NewRecorder.swift in Sources */,
 				E3A8F9E11E46F9C000C6C5FC /* util.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -257,6 +262,7 @@
 				CLANG_ENABLE_MODULES = NO;
 				INSTALL_PATH = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -270,6 +276,7 @@
 				CLANG_ENABLE_MODULES = NO;
 				INSTALL_PATH = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

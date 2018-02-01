@@ -2,7 +2,7 @@ import Foundation
 import AVFoundation
 import CoreGraphics
 
-var recorder: Recorder!
+var recorder: NewRecorder!
 let arguments = CommandLine.arguments.dropFirst()
 
 func quit(_: Int32) {
@@ -20,13 +20,17 @@ struct Options: Decodable {
   let displayId: String
   let audioDeviceId: String?
   let videoCodec: String?
+  let width: Int
+  let height: Int
+  let audioBitrate: Int
+  let videoBitrate: Int  
 }
 
 func record() throws {
   let json = arguments.first!.data(using: .utf8)!
   let options = try JSONDecoder().decode(Options.self, from: json)
-
-  recorder = try Recorder(
+  
+  recorder = NewRecorder(
     destination: options.destination,
     fps: options.fps,
     cropRect: options.cropRect,
@@ -34,22 +38,14 @@ func record() throws {
     highlightClicks: options.highlightClicks,
     displayId: options.displayId == "main" ? CGMainDisplayID() : CGDirectDisplayID(options.displayId)!,
     audioDevice: options.audioDeviceId != nil ? AVCaptureDevice(uniqueID: options.audioDeviceId!) : nil,
-    videoCodec: options.videoCodec
+    videoCodec: options.videoCodec!,
+    width: 1920,
+    height: 1080,
+    audioBitrate: 192000,
+    videoBitrate: 5000000
   )
-
-  recorder.onStart = {
-    print("R")
-  }
-
-  recorder.onFinish = {
-    exit(0)
-  }
-
-  recorder.onError = {
-    printErr($0)
-    exit(1)
-  }
-
+  recorder.setup()
+  
   signal(SIGHUP, quit)
   signal(SIGINT, quit)
   signal(SIGTERM, quit)

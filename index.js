@@ -38,7 +38,11 @@ class Aperture {
     highlightClicks = false,
     displayId = 'main',
     audioDeviceId = undefined,
-    videoCodec = undefined
+    videoCodec = undefined,
+    width = undefined,
+    height = undefined,
+    audioBitrate = undefined,
+    videoBitrate = undefined,
   } = {}) {
     return new Promise((resolve, reject) => {
       if (this.recorder !== undefined) {
@@ -68,7 +72,11 @@ class Aperture {
         showCursor,
         highlightClicks,
         displayId,
-        audioDeviceId
+        audioDeviceId,
+        width,
+        height,
+        audioBitrate,
+        videoBitrate
       };
 
       if (cropArea) {
@@ -97,7 +105,10 @@ class Aperture {
         recorderOpts.videoCodec = codecMap.get(videoCodec);
       }
 
+
       this.recorder = execa(BIN, [JSON.stringify(recorderOpts)]);
+      this.recorder.stdout.pipe(process.stdout)
+      this.recorder.stderr.pipe(process.stderr)
 
       const timeout = setTimeout(() => {
         // `.stopRecording()` was called already
