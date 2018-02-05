@@ -43,7 +43,8 @@ class Aperture {
     height = undefined,
     audioBitrate = undefined,
     videoBitrate = undefined,
-    aperturePath = undefined
+    aperturePath = undefined,
+    filePath = undefined
   } = {}) {
     BIN = aperturePath
 
@@ -53,7 +54,7 @@ class Aperture {
         return;
       }
 
-      this.tmpPath = tempy.file({extension: 'mp4'});
+      this.tmpPath = filePath;
 
       if (highlightClicks === true) {
         showCursor = true;
