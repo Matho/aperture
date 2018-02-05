@@ -1,5 +1,6 @@
 {
   "name": "aperture",
+  "private": true,
   "version": "4.0.0",
   "description": "Record the screen on macOS",
   "license": "MIT",
