@@ -68,7 +68,7 @@ func usage() {
   )
 }
 
-func printDisplays() {
+func printDisplays() throws  {
   var displayCount: UInt32 = 0;
   var result = CGGetActiveDisplayList(0, nil, &displayCount)
   if (result != CGError.success) {
@@ -83,10 +83,13 @@ func printDisplays() {
     return
   }
   print("\(displayCount) displays:")
+  var displays: [Dictionary<String, String>] = []
+  
   for i in 0..<displayCount {
-    printErr("[\(i)] - \(activeDisplays[Int(i)])")
+    displays.append(["id": "\(i)", "name": "\(activeDisplays[Int(i)])"])
   }
   activeDisplays.deallocate(capacity: allocated)
+  printErr(try toJson(displays))
 }
 
 
@@ -97,7 +100,7 @@ if arguments.first == "list-audio-devices" {
 }
 
 if arguments.first == "list-displays" {
-  printDisplays()
+  try printDisplays()
 
   exit(0)
 }
