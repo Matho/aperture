@@ -11,7 +11,7 @@ const electronUtil = require('electron-util/node');
 const debuglog = util.debuglog('aperture');
 
 // Workaround for https://github.com/electron/electron/issues/9459
-const BIN = path.join(electronUtil.fixPathForAsarUnpack(__dirname), 'aperture');
+var BIN = path.join(electronUtil.fixPathForAsarUnpack(__dirname), 'aperture');
 
 const supportsHevcHardwareEncoding = (() => {
   if (!macosVersion.isGreaterThanOrEqualTo('10.13')) {
@@ -43,7 +43,10 @@ class Aperture {
     height = undefined,
     audioBitrate = undefined,
     videoBitrate = undefined,
+    aperturePath = undefined
   } = {}) {
+    BIN = aperturePath
+
     return new Promise((resolve, reject) => {
       if (this.recorder !== undefined) {
         reject(new Error('Call `.stopRecording()` first'));
