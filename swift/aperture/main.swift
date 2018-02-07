@@ -39,10 +39,10 @@ func record() throws {
     displayId: options.displayId == "main" ? CGMainDisplayID() : CGDirectDisplayID(options.displayId)!,
     audioDevice: options.audioDeviceId != nil ? AVCaptureDevice(uniqueID: options.audioDeviceId!) : nil,
     videoCodec: options.videoCodec!,
-    width: 1920,
-    height: 1080,
-    audioBitrate: 192000,
-    videoBitrate: 5000000
+    width: options.width,
+    height: options.height,
+    audioBitrate: options.audioBitrate,
+    videoBitrate: options.videoBitrate
   )
   recorder.setup()
   
