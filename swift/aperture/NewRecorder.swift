@@ -122,17 +122,6 @@ AVCaptureVideoDataOutputSampleBufferDelegate {
     
     DispatchQueue.main.async {
       self.session.beginConfiguration()
-      
-      if self.session.canAddInput(self.deviceInput!) {
-        self.session.addInput(self.deviceInput!)
-      }
-      
-      if self.session.canAddOutput(self.videoOutput) {
-        self.session.addOutput(self.videoOutput)
-      }
-      
-      self.videoConnection = self.videoOutput.connection(with: AVMediaType.video)
-      
       let audioIn = try? AVCaptureDeviceInput(device: self.audioDevice!)
       
       if self.session.canAddInput(audioIn!) {
@@ -145,7 +134,18 @@ AVCaptureVideoDataOutputSampleBufferDelegate {
       
       self.audioConnection = self.audioOutput.connection(with: AVMediaType.audio)
       
+      if self.session.canAddInput(self.deviceInput!) {
+        self.session.addInput(self.deviceInput!)
+      }
+      
+      if self.session.canAddOutput(self.videoOutput) {
+        self.session.addOutput(self.videoOutput)
+      }
+      
+      self.videoConnection = self.videoOutput.connection(with: AVMediaType.video)
+     
       self.session.commitConfiguration()
+     
     }
   }
   
@@ -159,10 +159,6 @@ AVCaptureVideoDataOutputSampleBufferDelegate {
   }
   
   func startRecording() {
-    if self.assetWriter?.startWriting() != true {
-      print("error: \(self.assetWriter?.error.debugDescription ?? "")")
-    }
-    
     self.videoOutput.setSampleBufferDelegate(self, queue: self.recordingQueue)
     self.audioOutput.setSampleBufferDelegate(self, queue: self.recordingQueue)
   }
@@ -179,24 +175,37 @@ AVCaptureVideoDataOutputSampleBufferDelegate {
   func captureOutput(_ captureOutput: AVCaptureOutput, didOutput
     sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
     
-    if !self.isRecordingSessionStarted {
-      let presentationTime = CMTimeMakeWithSeconds(CACurrentMediaTime(), 240)
+    if self.assetWriter!.status == AVAssetWriterStatus.unknown {
+      let presentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+      
+      if self.assetWriter?.startWriting() != true {
+        print("error: \(self.assetWriter?.error.debugDescription ?? "")")
+      }
       self.assetWriter?.startSession(atSourceTime: presentationTime)
-      self.isRecordingSessionStarted = true
     }
     
-    let description = CMSampleBufferGetFormatDescription(sampleBuffer)!
+    if self.assetWriter!.status == AVAssetWriterStatus.failed {
+      print(self.assetWriter!.error!)
+      return
+    }
     
-    if CMFormatDescriptionGetMediaType(description) == kCMMediaType_Audio {
-      if self.audioInput!.isReadyForMoreMediaData {
-        //print("appendSampleBuffer audio");
-        self.audioInput?.append(sampleBuffer)
-      }
-    } else {
-      if self.videoInput!.isReadyForMoreMediaData {
-        //print("appendSampleBuffer video");
-        if !self.videoInput!.append(sampleBuffer) {
-          print("Error writing video buffer");
+    if assetWriter?.status == AVAssetWriterStatus.writing {
+      let description = CMSampleBufferGetFormatDescription(sampleBuffer)!
+      
+      if CMFormatDescriptionGetMediaType(description) == kCMMediaType_Audio {
+        if self.audioInput!.isReadyForMoreMediaData {
+          let appendStatus = self.audioInput!.append(sampleBuffer)
+          if !appendStatus {
+            print("Error writing audio buffer");
+          }
+        }
+      } else {
+        if self.videoInput!.isReadyForMoreMediaData {
+          //print("appendSampleBuffer video");
+          let appendStatus = self.videoInput!.append(sampleBuffer)
+          if !appendStatus {
+            print("Error writing video buffer");
+          }
         }
       }
     }
